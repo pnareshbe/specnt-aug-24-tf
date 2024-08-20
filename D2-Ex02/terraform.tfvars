@@ -1,0 +1,6 @@
+vpc_cidr = "10.20.0.0/16" 
+vpc_name = "vpc1"  
+sub_cidr = "10.20.1.0/24" 
+sub_name = "sub1" 
+tag_env = "dev" 
+tag_dep = "finance"

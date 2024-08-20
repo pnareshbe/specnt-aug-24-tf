@@ -13,6 +13,7 @@ resource "aws_vpc" "vpc" {
     }
 }
 
+# this is for map of string 
 resource "aws_subnet" "subnets" {
   for_each = var.subnets
   provider = aws.aws_dev
@@ -24,6 +25,24 @@ resource "aws_subnet" "subnets" {
       "Dep" = var.tag_dep
     }
 }
+
+# this is for map of objects 
+resource "aws_subnet" "subnets1" {
+  for_each = var.subnets1
+  provider = aws.aws_dev
+  vpc_id = aws_vpc.vpc.id
+
+    cidr_block = each.value.cidr_block
+    availability_zone = each.value.availability_zone
+      tags = {
+        "Name" = each.value.name
+        "Env" = var.tag_env
+        "Dep" = var.tag_dep
+      }
+    
+}
+# this is for map of objects 
+
 
 output "vpc-id" {
   value = aws_vpc.vpc.id

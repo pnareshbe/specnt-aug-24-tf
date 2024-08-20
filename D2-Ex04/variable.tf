@@ -21,6 +21,7 @@ variable "sub_name" {
   #default = [ "sub1", "sub2" ]
 }*/
 
+# this is for map of string 
 variable "subnets" {
   type = map(string)
   # default = {
@@ -28,3 +29,12 @@ variable "subnets" {
   #   sub2 = "10.20.2.0/24"
   # }
 }
+
+# this is for map of objects 
+variable "subnets1" {
+  type = map(object({
+    cidr_block        = string
+    availability_zone = string
+    name              = string
+  }))
+  }
