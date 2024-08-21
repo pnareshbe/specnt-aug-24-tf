@@ -23,6 +23,7 @@ resource "aws_subnet" "subnets" {
       "Name" = "${each.key}-${local.commonpart}"
       "Env" = var.tag_env
       "Dep" = var.tag_dep
+      "owner" = "Vishwa"
     }
 }
 
@@ -38,6 +39,7 @@ resource "aws_subnet" "subnets1" {
         "Name" = each.value.name
         "Env" = var.tag_env
         "Dep" = var.tag_dep
+        "owner" = "Vishwa"
       }
     
 }
