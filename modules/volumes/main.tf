@@ -1,5 +1,5 @@
 resource "aws_ebs_volume" "volume1" {
-  provider = aws.aws_dev
+  #provider = aws.aws_dev
   availability_zone = var.availability_zone
   size              = var.volume_size
 

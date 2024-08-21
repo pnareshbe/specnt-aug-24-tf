@@ -3,6 +3,15 @@ provider "aws" {
   profile = "aws-b1-d1"
 }
 
+/*terraform {
+ backend "s3" {
+   bucket = "vishwa21082024"
+   #bucket = "vishwa2108202401"
+   region = "us-east-1"
+   key = "terraform-mod.tfstate"
+ }
+}*/
+
 module "mynet" {
     source = "../modules/vpc-subnet"
     vpc_cidr = "10.20.0.0/16" 
@@ -23,4 +32,8 @@ module "myvolume" {
     volume_name = "vol-dev"
     availability_zone = "us-east-1a"
     volume_size = "1"
+}
+
+output "vpc-id" {
+  value = module.mynet.vpc-id
 }
