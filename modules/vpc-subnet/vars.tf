@@ -11,12 +11,21 @@ variable "tag_dep" {
 variable "vpc_cidr" {}
 variable "vpc_name" {}
 
-# this is for map of string 
-variable "subnets" {
-  type = map(string)
-  # default = {
-  #   sub1 = "10.20.1.0/24"
-  #   sub2 = "10.20.2.0/24"
-  # }
+variable "public_subnets" {
+  type = map(object({
+    cidr_block        = string
+    availability_zone = string
+    name              = string
+  }))
+  }
+
+variable "tags" {
+  description = "A map of tags to apply to all resources"
+  type        = map(string)
+  default = {
+    Env = "dev"
+    Project = "customer-web-project"
+  }
 }
- 
+
+variable "enable_ig" {}
