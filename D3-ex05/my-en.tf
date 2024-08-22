@@ -12,9 +12,10 @@ provider "aws" {
  }
 }*/
 
+
 module "mynet" {
     source = "../modules/vpc-subnet"
-    vpc_cidr = "10.20.0.0/16" 
+    vpc_cidr = var.vpc-cidr
     vpc_name = "vpc1" 
     tag_env = "dev" 
     tag_dep = "finance"
@@ -37,3 +38,4 @@ module "myvolume" {
 output "vpc-id" {
   value = module.mynet.vpc-id
 }
+
