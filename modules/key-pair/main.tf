@@ -13,5 +13,10 @@ resource "aws_key_pair" "generated_key" {
 # Save the private key locally
 resource "local_file" "private_key" {
   content  = tls_private_key.example_key.private_key_pem
-  filename = "${path.module}/${var.key_name1}.pem"
+  filename = "${var.path}/${var.key_name1}.pem"
+}
+
+
+output "key_path" {
+  value = "${var.path}/${var.key_name1}.pem"
 }
