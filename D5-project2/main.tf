@@ -47,7 +47,7 @@ module "mynet" {
 module "new-key-pair" {
   source = "../modules/key-pair"
   key_name1 = "key1-aug-24"
-  path = "D:\\repo\\TF-acc-19-aug-24\\D4-project1-optimized"
+  path = "D:\\repo\\TF-acc-19-aug-24\\D5-project2"
 }
 
 module "sgs" {
@@ -87,6 +87,46 @@ module "vm01" {
   volume_size = "1"
   volume_name = "vol1-vm01"
 }
+
+resource "null_resource" "mount_volume" {
+    triggers = {
+      always_run = "${timestamp()}"
+    } 
+ provisioner "remote-exec" {
+   
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"  # Default for Amazon Linux
+      #private_key = file("key1-aug-24.pem")  # Path to your private key
+      private_key = file(module.new-key-pair.key_path)
+      host        = module.vm01.web_server_public_ip
+    }
+
+    inline = [
+      # Partition the volume using fdisk
+      "echo -e 'n\np\n1\n\n\nw' | sudo fdisk /dev/xvdf",
+
+      # Format the volume (only if it hasn't been formatted already)
+      "sudo mkfs -t xfs /dev/xvdf1",
+
+      # Create a directory for mounting
+      "sudo mkdir -p /mnt/data",
+
+      # Mount the volume to the directory
+      "sudo mount /dev/xvdf1 /mnt/data",
+
+      # Ensure the volume is mounted at boot
+      "echo '/dev/xvdf1 /mnt/data xfs defaults,nofail 0 2' | sudo tee -a /etc/fstab",
+      "sudo chmod 777 /mnt/data",
+      #create new file in the new mount
+      "sudo echo 'test file' > /mnt/data/file1.txt",
+      "cat /mnt/data/file1.txt"
+
+    ]
+  }
+  #depends_on = [ module.new-key-pair.aws_key_pair.generated_key, module.vm01.aws_volume_attachment.example  ]
+}
+
 
 output "ec2_pub_ip" {
   value = module.vm01.web_server_public_ip
